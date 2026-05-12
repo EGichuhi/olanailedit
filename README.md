@@ -26,4 +26,4 @@ Hosted on GitHub Pages: `https://YOUR_USERNAME.github.io/ola-nailed-it`
 
 ## 📬 Contact
 
-By Mariam — Toronto, ON 🇨🇦
+By Eunice — Toronto, ON 🇨🇦
