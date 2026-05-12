@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ola Nailed It – Toronto Nail Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #f472b6;
+    --lavender: #c4b5fd;
+    --blush: #fce7f3;
+    --deep-pink: #db2777;
+    --soft-lilac: #ede9fe;
+    --white: #fff;
+    --text: #3b1a2e;
+    --muted: #9b7799;
+    --gradient: linear-gradient(135deg, #f9a8d4 0%, #c4b5fd 100%);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  * { cursor: none; }
+  #cursor {
+    position: fixed; top: 0; left: 0; width: 18px; height: 18px;
+    background: var(--pink); border-radius: 50%; pointer-events: none;
+    z-index: 9999; transform: translate(-50%, -50%);
+    transition: transform .15s ease, background .2s;
+    mix-blend-mode: multiply;
+  }
+  #cursor.big { transform: translate(-50%, -50%) scale(3); background: var(--lavender); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(244,114,182,0.15);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: .02em;
+  }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted); font-size: .85rem;
+    font-weight: 500; letter-spacing: .07em; text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--deep-pink); }
+  .nav-cta {
+    background: var(--gradient); color: #fff; border: none; border-radius: 50px;
+    padding: .55rem 1.4rem; font-size: .85rem; font-weight: 500;
+    letter-spacing: .04em; text-decoration: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(196,181,253,0.35) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(244,114,182,0.2) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--blush); color: var(--deep-pink);
+    font-size: .78rem; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; padding: .35rem .9rem; border-radius: 50px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-eyebrow span { font-size: .9rem; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    line-height: 1.08; font-weight: 700;
+    margin-bottom: 1.5rem;
+    animation: fadeUp .6s .1s ease both;
+  }
+  h1 em {
+    font-style: italic;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    color: var(--muted); font-size: 1.05rem; line-height: 1.65;
+    max-width: 420px; margin-bottom: 2.2rem;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-actions {
+    display: flex; align-items: center; gap: 1.2rem;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .btn-primary {
+    background: var(--gradient); color: #fff;
+    padding: .85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 500; font-size: .95rem;
+    box-shadow: 0 8px 25px rgba(244,114,182,0.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(244,114,182,0.45); }
+  .btn-ghost {
+    color: var(--deep-pink); font-weight: 500; font-size: .95rem;
+    text-decoration: none; display: flex; align-items: center; gap: .4rem;
+    transition: gap .2s;
+  }
+  .btn-ghost:hover { gap: .7rem; }
+
+  .hero-visual {
+    position: relative; z-index: 1;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-card {
+    background: linear-gradient(145deg, #fff5f9, #f0ebff);
+    border-radius: 28px; padding: 3rem;
+    box-shadow: 0 30px 80px rgba(196,181,253,0.25), 0 0 0 1px rgba(244,114,182,0.1);
+    position: relative;
+  }
+  .hero-card-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .nail-chip {
+    border-radius: 16px; aspect-ratio: 1;
+    display: flex; align-items: flex-end; padding: 1rem;
+    position: relative; overflow: hidden;
+    transition: transform .25s ease;
+  }
+  .nail-chip:hover { transform: scale(1.04) rotate(-1deg); }
+  .nail-chip:nth-child(1) { background: linear-gradient(135deg, #fda4af, #fb7185); }
+  .nail-chip:nth-child(2) { background: linear-gradient(135deg, #c4b5fd, #a78bfa); }
+  .nail-chip:nth-child(3) { background: linear-gradient(135deg, #fbcfe8, #f9a8d4); }
+  .nail-chip:nth-child(4) { background: linear-gradient(135deg, #ddd6fe, #c4b5fd); }
+  .nail-chip-label {
+    font-size: .72rem; font-weight: 500; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2); letter-spacing: .04em;
+  }
+  .badge {
+    position: absolute; top: -12px; right: -12px;
+    background: var(--text); color: #fff;
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: .65rem; font-weight: 500; text-align: center; line-height: 1.3;
+    letter-spacing: .03em; text-transform: uppercase;
+    animation: spin 12s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── STRIP ── */
+  .marquee-strip {
+    background: var(--text); color: var(--blush);
+    padding: 1rem 0; overflow: hidden;
+    font-size: .82rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  }
+  .marquee-inner {
+    display: flex; gap: 3rem; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-inner span { flex-shrink: 0; }
+  .marquee-inner em { color: var(--pink); font-style: normal; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SERVICES ── */
+  .services { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-tag {
+    display: inline-block; color: var(--deep-pink);
+    font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 500; margin-bottom: .8rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .service-card {
+    background: linear-gradient(160deg, #fff8fb, #f5f0ff);
+    border: 1px solid rgba(244,114,182,0.12);
+    border-radius: 22px; padding: 2rem;
+    transition: transform .25s, box-shadow .25s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gradient);
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(196,181,253,0.2); }
+  .service-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: .5rem;
+  }
+  .service-desc { color: var(--muted); font-size: .88rem; line-height: 1.6; margin-bottom: 1.2rem; }
+  .service-price {
+    font-weight: 700; color: var(--deep-pink); font-size: 1.05rem;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    padding: 6rem 3rem; background: linear-gradient(160deg, #fff5fa 0%, #f0ebff 100%);
+  }
+  .about-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 5rem;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-blob {
+    width: 100%; aspect-ratio: 1;
+    background: var(--gradient);
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7rem;
+    box-shadow: 0 30px 70px rgba(244,114,182,0.25);
+    animation: morph 8s ease-in-out infinite;
+  }
+  @keyframes morph {
+    0%,100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+    33%      { border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
+    66%      { border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%; }
+  }
+  .about-stat {
+    position: absolute; background: #fff;
+    border-radius: 16px; padding: .9rem 1.2rem;
+    box-shadow: 0 10px 30px rgba(196,181,253,0.2);
+    font-size: .8rem; font-weight: 500; color: var(--text);
+  }
+  .about-stat strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--deep-pink); }
+  .about-stat:nth-child(2) { top: 8%; right: -5%; }
+  .about-stat:nth-child(3) { bottom: 10%; left: -5%; }
+  .about-text h2 { margin-bottom: 1.2rem; }
+  .about-text p { color: var(--muted); line-height: 1.75; margin-bottom: 1rem; font-size: .95rem; }
+  .about-text p strong { color: var(--text); }
+  .about-highlights { display: flex; gap: 1rem; margin-top: 1.8rem; flex-wrap: wrap; }
+  .highlight-pill {
+    background: #fff; border: 1px solid rgba(244,114,182,0.2);
+    border-radius: 50px; padding: .45rem 1rem;
+    font-size: .8rem; font-weight: 500; color: var(--deep-pink);
+  }
+
+  /* ── GALLERY ── */
+  .gallery { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 180px);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .gallery-item {
+    border-radius: 18px; overflow: hidden;
+    transition: transform .3s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+    position: relative;
+  }
+  .gallery-item:hover { transform: scale(1.03); z-index: 2; }
+  .gallery-item:nth-child(1) { background: linear-gradient(135deg, #fda4af 0%, #fb7185 100%); grid-column: span 2; grid-row: span 2; font-size: 5rem; }
+  .gallery-item:nth-child(2) { background: linear-gradient(135deg, #c4b5fd, #a78bfa); }
+  .gallery-item:nth-child(3) { background: linear-gradient(135deg, #fbcfe8, #f9a8d4); }
+  .gallery-item:nth-child(4) { background: linear-gradient(135deg, #fde68a, #fbbf24); }
+  .gallery-item:nth-child(5) { background: linear-gradient(135deg, #6ee7b7, #34d399); }
+  .gallery-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(30,10,25,.6), transparent);
+    color: #fff; padding: .8rem 1rem .6rem;
+    font-size: .75rem; font-weight: 500; letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .gallery-cta { text-align: center; margin-top: 2.5rem; }
+
+  /* ── BOOKING ── */
+  .booking {
+    padding: 6rem 3rem;
+    background: var(--text); color: #fff;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .booking::before {
+    content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(244,114,182,0.2), transparent 65%);
+    pointer-events: none;
+  }
+  .booking h2 { color: #fff; margin-bottom: 1rem; position: relative; }
+  .booking p { color: rgba(255,255,255,.6); margin-bottom: 2.5rem; font-size: 1rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .booking-form {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    position: relative;
+  }
+  .booking-form input, .booking-form select {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px; padding: .9rem 1.3rem;
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    min-width: 180px;
+  }
+  .booking-form input::placeholder { color: rgba(255,255,255,.4); }
+  .booking-form select option { color: var(--text); background: #fff; }
+  .booking-form button {
+    background: var(--gradient); color: #fff; border: none;
+    border-radius: 12px; padding: .9rem 2rem;
+    font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 500;
+    box-shadow: 0 8px 25px rgba(244,114,182,0.4);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .booking-form button:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(244,114,182,0.5); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1e0a1d; color: rgba(255,255,255,.5);
+    padding: 3rem; text-align: center; font-size: .85rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+    background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: .5rem; display: block;
+  }
+  .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1.2rem 0; list-style: none; }
+  .footer-links a { color: rgba(255,255,255,.45); text-decoration: none; font-size: .82rem; transition: color .2s; }
+  .footer-links a:hover { color: var(--pink); }
+  .footer-socials { display: flex; justify-content: center; gap: 1rem; margin: 1rem 0; }
+  .social-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,.07); display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+  .social-btn:hover { background: rgba(244,114,182,.3); transform: translateY(-2px); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2.5rem; }
+    .hero-visual { order: -1; }
+    .hero-card { padding: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .services, .gallery { padding: 4rem 1.5rem; }
+    .about, .booking { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Ola Nailed It</span>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#booking">Contact</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow"><span>💅</span> Toronto's Nail Artist</div>
+    <h1>Every nail, <em>perfectly</em> done.</h1>
+    <p class="hero-sub">Mariam creates stunning, long-lasting nail art tailored to you — from soft & elegant to bold & expressive.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary">Book Your Appointment</a>
+      <a href="#gallery" class="btn-ghost">View Gallery →</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hero-card-inner">
+        <div class="nail-chip"><span class="nail-chip-label">Gel Extensions</span></div>
+        <div class="nail-chip"><span class="nail-chip-label">Nail Art</span></div>
+        <div class="nail-chip"><span class="nail-chip-label">Acrylics</span></div>
+        <div class="nail-chip"><span class="nail-chip-label">Manicure</span></div>
+      </div>
+      <div class="badge">5★<br>Rated<br>Toronto</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Gel Nails <em>✦</em></span>
+    <span>Nail Art <em>✦</em></span>
+    <span>Acrylics <em>✦</em></span>
+    <span>Ombre <em>✦</em></span>
+    <span>Nail Extensions <em>✦</em></span>
+    <span>Press-On Sets <em>✦</em></span>
+    <span>Toronto's Favourite Nail Tech <em>✦</em></span>
+    <span>Gel Nails <em>✦</em></span>
+    <span>Nail Art <em>✦</em></span>
+    <span>Acrylics <em>✦</em></span>
+    <span>Ombre <em>✦</em></span>
+    <span>Nail Extensions <em>✦</em></span>
+    <span>Press-On Sets <em>✦</em></span>
+    <span>Toronto's Favourite Nail Tech <em>✦</em></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header reveal">
+    <span class="section-tag">What We Offer</span>
+    <h2>Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">💅</span>
+      <div class="service-name">Gel Manicure</div>
+      <p class="service-desc">Long-lasting, chip-free gel polish in any colour — classic or custom design. Perfect for 3–4 weeks of flawless wear.</p>
+      <div class="service-price">From $65</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">✨</span>
+      <div class="service-name">Nail Extensions</div>
+      <p class="service-desc">Acrylic or gel extensions built to your desired length and shape — coffin, almond, stiletto, square, and more.</p>
+      <div class="service-price">From $90</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🎨</span>
+      <div class="service-name">Nail Art</div>
+      <p class="service-desc">Custom hand-painted designs, chrome powders, floral, abstract, 3D gems — your nails, your vision, brought to life.</p>
+      <div class="service-price">From $20 add-on</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🌸</span>
+      <div class="service-name">Ombré & Gradient</div>
+      <p class="service-desc">Dreamy colour transitions — baby pink to white, sunset hues, and everything in between. Soft & stunning.</p>
+      <div class="service-price">From $75</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">💎</span>
+      <div class="service-name">Infill & Maintenance</div>
+      <p class="service-desc">Keep your set looking fresh. Gel or acrylic infill every 2–3 weeks to maintain strength and shine.</p>
+      <div class="service-price">From $55</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🫧</span>
+      <div class="service-name">Removal & Refresh</div>
+      <p class="service-desc">Safe, gentle removal of old gel or acrylics with a nourishing treatment to restore nail health before your next set.</p>
+      <div class="service-price">From $30</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-visual">
+      <div class="about-blob">💅</div>
+      <div class="about-stat"><strong>200+</strong>Happy Clients</div>
+      <div class="about-stat"><strong>5★</strong>Reviews</div>
+    </div>
+    <div class="about-text reveal">
+      <span class="section-tag">Meet Your Nail Artist</span>
+      <h2>Hi, I'm Mariam 👋</h2>
+      <p>I'm a certified nail technician based in <strong>Toronto, ON</strong> — passionate about creating nail art that's as unique as the person wearing it. I started Ola Nailed It to combine artistry with care, ensuring every client leaves feeling polished and confident.</p>
+      <p>From everyday elegance to statement sets, I work with you to bring your vision to life. I use only <strong>premium, nail-safe products</strong> and take pride in a clean, comfortable experience every time.</p>
+      <p>DM me on Instagram or book below — I'd love to have you in the chair!</p>
+      <div class="about-highlights">
+        <span class="highlight-pill">✓ Certified Tech</span>
+        <span class="highlight-pill">✓ Premium Products</span>
+        <span class="highlight-pill">✓ Toronto Based</span>
+        <span class="highlight-pill">✓ Custom Designs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="section-header reveal">
+    <span class="section-tag">The Work</span>
+    <h2>Gallery</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item">🌸<span class="gallery-label">Floral Art</span></div>
+    <div class="gallery-item">💜<span class="gallery-label">Lavender Gel</span></div>
+    <div class="gallery-item">🤍<span class="gallery-label">French Tips</span></div>
+    <div class="gallery-item">✨<span class="gallery-label">Chrome Powder</span></div>
+    <div class="gallery-item">🌿<span class="gallery-label">Sage Green Set</span></div>
+  </div>
+  <div class="gallery-cta reveal">
+    <p style="color:var(--muted); margin-bottom:1rem; font-size:.9rem;">Follow <strong>@olanailiedit</strong> on Instagram for the latest sets</p>
+    <a href="https://instagram.com" target="_blank" class="btn-primary">View on Instagram →</a>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="booking">
+  <h2 class="reveal">Ready to get your nails done?</h2>
+  <p class="reveal">Send Mariam a message and she'll get back to you to confirm your appointment.</p>
+  <div class="booking-form reveal">
+    <input type="text" placeholder="Your Name">
+    <input type="text" placeholder="Phone or Instagram">
+    <select>
+      <option value="" disabled selected>Choose a Service</option>
+      <option>Gel Manicure</option>
+      <option>Nail Extensions</option>
+      <option>Nail Art Add-on</option>
+      <option>Ombré Set</option>
+      <option>Infill</option>
+      <option>Removal</option>
+    </select>
+    <input type="text" placeholder="Preferred Date & Time">
+    <button onclick="alert('Thanks! Mariam will reach out to confirm your booking 💅')">Send Request 💌</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Ola Nailed It</span>
+  <p>By Mariam — Toronto, Ontario 🇨🇦</p>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#booking">Book Now</a></li>
+  </ul>
+  <div class="footer-socials">
+    <a class="social-btn" href="https://instagram.com" target="_blank">📷</a>
+    <a class="social-btn" href="https://tiktok.com" target="_blank">🎵</a>
+    <a class="social-btn" href="mailto:hello@olanailiedit.com">✉️</a>
+  </div>
+  <p style="margin-top:1.5rem; font-size:.75rem;">© 2026 Ola Nailed It. All rights reserved.</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .service-card, .nail-chip').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
